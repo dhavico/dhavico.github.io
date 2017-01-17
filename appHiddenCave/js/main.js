@@ -93,8 +93,67 @@ var framesP = {
 		height: 79
 	}]
 };
+var frameLuna = {
+	abierto:[{
+		x: 0,
+        y: 0,
+        width: 468,
+        height: 460
+	}],
+	pestaniando:[{
+		x: 0,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 511,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 1022,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 1533,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 2045,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 2556,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 2045,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 1533,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 1022,
+        y: 0,
+        width: 468,
+        height: 460
+	},{
+		x: 511,
+        y: 0,
+        width: 468,
+        height: 460
+	}]
+};
 var stage, fondo, grupoAssets;
-var personaje;
+var personaje,luna;
 var techo, piso, piso2, paredIzq, paredDer;
 var keyboard = {};
 var intv;
@@ -106,6 +165,24 @@ var puntaje, vidas;
 var juego = new Game();
 var imgMu = new Image();
 imgMu.src = 'img/muro.jpg';
+var imgFondo = new Image();
+imgFondo.src = 'img/fondo.png';
+var imgLuna = new Image();
+imgLuna.src = 'img/spriteLuna.png';
+var imgMoneda = new Image();
+imgMoneda.src = 'img/moneda.png';
+var imgPl70 = new Image();
+imgPl70.src = 'img/plataforma_70x50.png';
+var imgPl140 = new Image();
+imgPl140.src = 'img/plataforma_140x50.png';
+var imgPl280 = new Image();
+imgPl280.src = 'img/plataforma_280x50.png';
+var imgPl700 = new Image();
+imgPl700.src = 'img/plataforma_700x50.png';
+var imgEnemigo = new Image();
+imgEnemigo.src = 'img/enemigoRosa.png';
+var imgLlave = new Image();
+imgLlave.src = 'img/llave.png';
 //var audio = new Audio('sound/salto.ogg');
 
 grupoAssets = new Kinetic.Group({
@@ -117,13 +194,20 @@ stage = new Kinetic.Stage({
 	width: document.documentElement.clientWidth,
 	height: document.documentElement.clientHeight < 700 ? jHeight : document.documentElement.clientHeight
 });
+imagenFondo = new Kinetic.Image({
+    x:0,
+    y:0,
+    image: imgFondo,
+    width: stage.getWidth(),
+    height: stage.getHeight()
+});
 puntaje = new Kinetic.Text({
 	text: 'Puntaje: 0',
 	height: 25,
 	width: 150,
 	x: stage.getWidth()-150,
 	y: 10,
-	fill: '#222',
+	fill: '#fff',
 	fontFamily: 'Arial',
 	fontSize: 22
 });
@@ -133,7 +217,7 @@ vidas = new Kinetic.Text({
 	width: 150,
 	x: 50,
 	y: 10,
-	fill: '#222',
+	fill: '#fff',
 	fontFamily: 'Arial',
 	fontSize: 22
 });
@@ -162,165 +246,165 @@ function nivelUno() {
 	/* Enemigos */
 	/*=====================================================================================
 	=======================================================================================*/
-	grupoAssets.add(new Enemigo(480, 540-60,2.5));												//////////////
-	grupoAssets.add(new Enemigo(640, jHeight-80,5));											//////////////
-	grupoAssets.add(new Enemigo(835, 420-60,2.5));												/////
-	grupoAssets.add(new Enemigo(1129, 180-60,2.5));												/////
-	grupoAssets.add(new Enemigo(1371, 420-60,4.15));											//////////////
-	grupoAssets.add(new Enemigo(jWidth + 160, 440-60,4.5));										//////////////
-	grupoAssets.add(new Enemigo(2040, 10-60,2.5));												/////
-	grupoAssets.add(new Enemigo(2496, jHeight-80,4.5));											/////
-	grupoAssets.add(new Enemigo(2822, 440-60,2.5));												//////////////
-	grupoAssets.add(new Enemigo(2942, jHeight-80,4.5));											//////////////
-	grupoAssets.add(new Enemigo(3456, 130-60,2.5));
-	grupoAssets.add(new Enemigo(jWidth + 1800, 460-60,2.75));
-	grupoAssets.add(new Enemigo(4400, jHeight-80,4.5));
-	grupoAssets.add(new Enemigo(4440, 360-60,2.5));
-	grupoAssets.add(new Enemigo(4920, jHeight-80,4.5));
-	grupoAssets.add(new Enemigo(5310, 520-60,2.5));
-	grupoAssets.add(new Enemigo(jWidth*3 + 230, jHeight - 100-60,2.5));
-	grupoAssets.add(new Enemigo(jWidth*3 + 600 + 280, 400-60,2.5));
-	grupoAssets.add(new Enemigo(6780, -10-60,4.15));
-	grupoAssets.add(new Enemigo(7270, 210-60,4.15));
-	grupoAssets.add(new Enemigo(7550, jHeight-230,4.5));
-	grupoAssets.add(new Enemigo(7970, 400-60,4.15));
-	grupoAssets.add(new Enemigo(8180, jHeight-230,4.5));
-	grupoAssets.add(new Enemigo(8500, 210-60,2.5));
-	grupoAssets.add(new Enemigo(8670, jHeight-230,4.5));
-	grupoAssets.add(new Enemigo(9020, 400-60,1));
+	grupoAssets.add(new Enemigo(480, 540-60,2.5,imgEnemigo));												//////////////
+	grupoAssets.add(new Enemigo(640, jHeight-80,5,imgEnemigo));											//////////////
+	grupoAssets.add(new Enemigo(835, 420-60,2.5,imgEnemigo));												/////
+	grupoAssets.add(new Enemigo(1129, 180-60,2.5,imgEnemigo));												/////
+	grupoAssets.add(new Enemigo(1371, 420-60,4.15,imgEnemigo));											//////////////
+	grupoAssets.add(new Enemigo(jWidth + 160, 440-60,4.5,imgEnemigo));										//////////////
+	grupoAssets.add(new Enemigo(2040, 10-60,2.5,imgEnemigo));												/////
+	grupoAssets.add(new Enemigo(2496, jHeight-80,4.5,imgEnemigo));											/////
+	grupoAssets.add(new Enemigo(2822, 440-60,2.5,imgEnemigo));												//////////////
+	grupoAssets.add(new Enemigo(2942, jHeight-80,4.5,imgEnemigo));											//////////////
+	grupoAssets.add(new Enemigo(3456, 130-60,2.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(jWidth + 1800, 460-60,2.75,imgEnemigo));
+	grupoAssets.add(new Enemigo(4400, jHeight-80,4.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(4440, 360-60,2.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(4920, jHeight-80,4.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(5310, 520-60,2.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(jWidth*3 + 230, jHeight - 100-60,2.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(jWidth*3 + 600 + 280, 400-60,2.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(6780, -10-60,4.15,imgEnemigo));
+	grupoAssets.add(new Enemigo(7270, 210-60,4.15,imgEnemigo));
+	grupoAssets.add(new Enemigo(7550, jHeight-230,4.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(7970, 400-60,4.15,imgEnemigo));
+	grupoAssets.add(new Enemigo(8180, jHeight-230,4.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(8500, 210-60,2.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(8670, jHeight-230,4.5,imgEnemigo));
+	grupoAssets.add(new Enemigo(9020, 400-60,1,imgEnemigo));
 	/* Plataforma (X, Y, W)*/
 	/*=====================================================================================
 	=======================================================================================*/
-	/*1*/grupoAssets.add(new Plataforma(480, 540, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(565, 296, 140));
-	grupoAssets.add(new Plataforma(640, 480, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(835, 420, 140));//SIN MONEDA
-	/*5*/grupoAssets.add(new Plataforma(1129, 180, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(1180, 540, 140));//TRES MONEDAS VERTICALES
-	grupoAssets.add(new Plataforma(1280, 296, 140));
-	grupoAssets.add(new Plataforma(1371, 420, 280));//DOS MONEDAS EXTREMOS//--ENEMIGO
-	grupoAssets.add(new Plataforma(1980, 270, 140));
-	/*10*/grupoAssets.add(new Plataforma(2040, 10, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(2112, 130, 140));
-	grupoAssets.add(new Plataforma(2496, 10, 700));//MONEDAS EN TODA LA PLATAFORMA
-	grupoAssets.add(new Plataforma(2496, 440, 140));
-	grupoAssets.add(new Plataforma(2822, 440, 140));//--ENEMIGO
-	/*15*/grupoAssets.add(new Plataforma(3110, 550, 140));
-	grupoAssets.add(new Plataforma(3456, 130, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(3744, 230, 140));
-	grupoAssets.add(new Plataforma(4400, 520, 70));//SIN MONEDA
-	grupoAssets.add(new Plataforma(4440, 360, 140));//--ENEMIGO
-	/*20*/grupoAssets.add(new Plataforma(4540, 520, 140));
-	grupoAssets.add(new Plataforma(4680, 200, 140));//SIN MONEDA
-	grupoAssets.add(new Plataforma(4890, 360, 280));//SIN MONEDA
-	grupoAssets.add(new Plataforma(5310, 520, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(jWidth*3 + 230, jHeight - 100, 140));//DOS MONEDAS VERTICALES//--ENEMIGO
-	/*25*/grupoAssets.add(new Plataforma(jWidth*3 + 600 + 280, 400, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(6780, -10, 280));//--ENEMIGO//LLAVE
-	grupoAssets.add(new Plataforma(6920, 300, 140));//SIN MONEDA
-	grupoAssets.add(new Plataforma(7130, 110, 140));//SIN MONEDA
-	grupoAssets.add(new Plataforma(7270, 210, 280));//--ENEMIGO
-	/*30*/grupoAssets.add(new Plataforma(7690, 400, 140));
-	grupoAssets.add(new Plataforma(7900, 210, 140));//SIN MONEDA
-	grupoAssets.add(new Plataforma(7970, 400, 280));//--ENEMIGO
-	grupoAssets.add(new Plataforma(8180, 120, 140));
-	grupoAssets.add(new Plataforma(8460, 400, 140));//SIN MONEDA//--ENEMIGO
-	/*35*/grupoAssets.add(new Plataforma(8500, 210, 140));//--ENEMIGO
-	grupoAssets.add(new Plataforma(8740, 400, 140));
-	grupoAssets.add(new Plataforma(9020, 400, 70));//SIN MONEDA
-	grupoAssets.add(new Plataforma(9110, 250, 70));
-	grupoAssets.add(new Plataforma(9200, 400, 70));//SIN MONEDA
+	/*1*/grupoAssets.add(new Plataforma(480, 540, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(565, 296, 140,imgPl140));
+	grupoAssets.add(new Plataforma(640, 480, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(835, 420, 140,imgPl140));//SIN MONEDA
+	/*5*/grupoAssets.add(new Plataforma(1129, 180, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(1180, 540, 140,imgPl140));//TRES MONEDAS VERTICALES
+	grupoAssets.add(new Plataforma(1280, 296, 140,imgPl140));
+	grupoAssets.add(new Plataforma(1371, 420, 280,imgPl280));//DOS MONEDAS EXTREMOS//--ENEMIGO
+	grupoAssets.add(new Plataforma(1980, 270, 140,imgPl140));
+	/*10*/grupoAssets.add(new Plataforma(2040, 10, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(2112, 130, 140,imgPl140));
+	grupoAssets.add(new Plataforma(2496, 10, 700,imgPl700));//MONEDAS EN TODA LA PLATAFORMA
+	grupoAssets.add(new Plataforma(2496, 440, 140,imgPl140));
+	grupoAssets.add(new Plataforma(2822, 440, 140,imgPl140));//--ENEMIGO
+	/*15*/grupoAssets.add(new Plataforma(3110, 550, 140,imgPl140));
+	grupoAssets.add(new Plataforma(3456, 130, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(3744, 230, 140,imgPl140));
+	grupoAssets.add(new Plataforma(4400, 520, 70,imgPl70));//SIN MONEDA
+	grupoAssets.add(new Plataforma(4440, 360, 140,imgPl140));//--ENEMIGO
+	/*20*/grupoAssets.add(new Plataforma(4540, 520, 140,imgPl140));
+	grupoAssets.add(new Plataforma(4680, 200, 140,imgPl140));//SIN MONEDA
+	grupoAssets.add(new Plataforma(4890, 360, 280,imgPl280));//SIN MONEDA
+	grupoAssets.add(new Plataforma(5310, 520, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(jWidth*3 + 230, jHeight - 100, 140,imgPl140));//DOS MONEDAS VERTICALES//--ENEMIGO
+	/*25*/grupoAssets.add(new Plataforma(jWidth*3 + 600 + 280, 400, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(6780, -10, 280,imgPl280));//--ENEMIGO//LLAVE
+	grupoAssets.add(new Plataforma(6920, 300, 140,imgPl140));//SIN MONEDA
+	grupoAssets.add(new Plataforma(7130, 110, 140,imgPl140));//SIN MONEDA
+	grupoAssets.add(new Plataforma(7270, 210, 280,imgPl280));//--ENEMIGO
+	/*30*/grupoAssets.add(new Plataforma(7690, 400, 140,imgPl140));
+	grupoAssets.add(new Plataforma(7900, 210, 140,imgPl140));//SIN MONEDA
+	grupoAssets.add(new Plataforma(7970, 400, 280,imgPl280));//--ENEMIGO
+	grupoAssets.add(new Plataforma(8180, 120, 140,imgPl140));
+	grupoAssets.add(new Plataforma(8460, 400, 140,imgPl140));//SIN MONEDA//--ENEMIGO
+	/*35*/grupoAssets.add(new Plataforma(8500, 210, 140,imgPl140));//--ENEMIGO
+	grupoAssets.add(new Plataforma(8740, 400, 140,imgPl140));
+	grupoAssets.add(new Plataforma(9020, 400, 70,imgPl70));//SIN MONEDA
+	grupoAssets.add(new Plataforma(9110, 250, 70,imgPl70));
+	grupoAssets.add(new Plataforma(9200, 400, 70,imgPl70));//SIN MONEDA
 	/* Llave */
-	grupoAssets.add(new Llave(6780+30, -10-40))
+	grupoAssets.add(new Llave(6780+30, -10-40,imgLlave))
 	/* Monedas */
 	/*=====================================================================================
 	=======================================================================================*/
-	grupoAssets.add(new Moneda(300, jHeight-50));
-	grupoAssets.add(new Moneda(380, jHeight-50));
-	grupoAssets.add(new Moneda(480+70, 540-30));
-	grupoAssets.add(new Moneda(565+70, 296-30));
-	grupoAssets.add(new Moneda(640+70, 480-30));
-	grupoAssets.add(new Moneda(835+30, 320-30));
-	grupoAssets.add(new Moneda(835+70, 320-30));
-	grupoAssets.add(new Moneda(835+110, 320-30));
-	grupoAssets.add(new Moneda(1129+30, 180-30));
+	grupoAssets.add(new Moneda(300, jHeight-50,imgMoneda));
+	grupoAssets.add(new Moneda(380, jHeight-50,imgMoneda));
+	grupoAssets.add(new Moneda(480+70, 540-30,imgMoneda));
+	grupoAssets.add(new Moneda(565+70, 296-30,imgMoneda));
+	grupoAssets.add(new Moneda(640+70, 480-30,imgMoneda));
+	grupoAssets.add(new Moneda(835+30, 320-30,imgMoneda));
+	grupoAssets.add(new Moneda(835+70, 320-30,imgMoneda));
+	grupoAssets.add(new Moneda(835+110, 320-30,imgMoneda));
+	grupoAssets.add(new Moneda(1129+30, 180-30,imgMoneda));
 	/*TRES MONEDAS VERTICALES*/
-	grupoAssets.add(new Moneda(1180+70, 540-30));
-	grupoAssets.add(new Moneda(1180+70, 540-70));
-	grupoAssets.add(new Moneda(1180+70, 540-110));
+	grupoAssets.add(new Moneda(1180+70, 540-30,imgMoneda));
+	grupoAssets.add(new Moneda(1180+70, 540-70,imgMoneda));
+	grupoAssets.add(new Moneda(1180+70, 540-110,imgMoneda));
 	/*-----------------------*/
-	grupoAssets.add(new Moneda(1280+110, 296-30));
+	grupoAssets.add(new Moneda(1280+110, 296-30,imgMoneda));
 	/*DOS MONEDAS EXTREMOS*/
-	grupoAssets.add(new Moneda(1371+30, 420-30));
-	grupoAssets.add(new Moneda(1371+250, 420-30));
+	grupoAssets.add(new Moneda(1371+30, 420-30,imgMoneda));
+	grupoAssets.add(new Moneda(1371+250, 420-30,imgMoneda));
 	/*--------------------*/
-	grupoAssets.add(new Moneda(1980+30, 270-30));
-	grupoAssets.add(new Moneda(2040+70, 10-30));
-	grupoAssets.add(new Moneda(2112+100, 130-30));
-	grupoAssets.add(new Moneda(jWidth + 160 + 280, 440-30));
+	grupoAssets.add(new Moneda(1980+30, 270-30,imgMoneda));
+	grupoAssets.add(new Moneda(2040+70, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2112+100, 130-30,imgMoneda));
+	grupoAssets.add(new Moneda(jWidth + 160 + 280, 440-30,imgMoneda));
 	/*MONEDAS EN TODA LA PLATAFORMA*/
-	grupoAssets.add(new Moneda(2496+30, 10-30));
-	grupoAssets.add(new Moneda(2496+50, -20-30));
-	grupoAssets.add(new Moneda(2496+70, 10-30));
-	grupoAssets.add(new Moneda(2496+90, -20-30));
-	grupoAssets.add(new Moneda(2496+110, 10-30));
-	grupoAssets.add(new Moneda(2496+130, -20-30));
-	grupoAssets.add(new Moneda(2496+150, 10-30));
-	grupoAssets.add(new Moneda(2496+170, -20-30));
-	grupoAssets.add(new Moneda(2496+190, 10-30));
-	grupoAssets.add(new Moneda(2496+210, -20-30));
-	grupoAssets.add(new Moneda(2496+230, 10-30));
-	grupoAssets.add(new Moneda(2496+210, -20-30));
-	grupoAssets.add(new Moneda(2496+230, 10-30));
-	grupoAssets.add(new Moneda(2496+250, -20-30));
-	grupoAssets.add(new Moneda(2496+270, 10-30));
-	grupoAssets.add(new Moneda(2496+290, -20-30));
-	grupoAssets.add(new Moneda(2496+310, 10-30));
-	grupoAssets.add(new Moneda(2496+330, -20-30));
-	grupoAssets.add(new Moneda(2496+350, 10-30));
-	grupoAssets.add(new Moneda(2496+370, -20-30));
-	grupoAssets.add(new Moneda(2496+390, 10-30));
-	grupoAssets.add(new Moneda(2496+410, -20-30));
-	grupoAssets.add(new Moneda(2496+430, 10-30));
-	grupoAssets.add(new Moneda(2496+450, -20-30));
-	grupoAssets.add(new Moneda(2496+470, 10-30));
-	grupoAssets.add(new Moneda(2496+490, -20-30));
-	grupoAssets.add(new Moneda(2496+510, 10-30));
-	grupoAssets.add(new Moneda(2496+530, -20-30));
-	grupoAssets.add(new Moneda(2496+550, 10-30));
-	grupoAssets.add(new Moneda(2496+570, -20-30));
-	grupoAssets.add(new Moneda(2496+590, 10-30));
-	grupoAssets.add(new Moneda(2496+610, -20-30));
-	grupoAssets.add(new Moneda(2496+630, 10-30));
-	grupoAssets.add(new Moneda(2496+650, -20-30));
-	grupoAssets.add(new Moneda(2496+670, 10-30));
+	grupoAssets.add(new Moneda(2496+30, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+50, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+70, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+90, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+110, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+130, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+150, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+170, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+190, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+210, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+230, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+210, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+230, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+250, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+270, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+290, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+310, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+330, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+350, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+370, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+390, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+410, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+430, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+450, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+470, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+490, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+510, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+530, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+550, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+570, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+590, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+610, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+630, 10-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+650, -20-30,imgMoneda));
+	grupoAssets.add(new Moneda(2496+670, 10-30,imgMoneda));
 	/*-----------------------------*/
-	grupoAssets.add(new Moneda(2496+70, 440-30));
-	grupoAssets.add(new Moneda(2659+70, 380-30));
-	grupoAssets.add(new Moneda(2822+70, 440-30));
-	grupoAssets.add(new Moneda(3110+70, 550-30));
-	grupoAssets.add(new Moneda(jWidth + 1350+30, 380-30));
-	grupoAssets.add(new Moneda(3456+30, 130-30));
-	grupoAssets.add(new Moneda(3744+70, 230-30));
-	grupoAssets.add(new Moneda(4440+70, 360-30));
-	grupoAssets.add(new Moneda(4490+70, jHeight-50));
-	grupoAssets.add(new Moneda(4540+70, 520-30));
-	grupoAssets.add(new Moneda(4890+230, jHeight-50));
-	grupoAssets.add(new Moneda(5310+70, 520-30));
+	grupoAssets.add(new Moneda(2496+70, 440-30,imgMoneda));
+	grupoAssets.add(new Moneda(2659+70, 380-30,imgMoneda));
+	grupoAssets.add(new Moneda(2822+70, 440-30,imgMoneda));
+	grupoAssets.add(new Moneda(3110+70, 550-30,imgMoneda));
+	grupoAssets.add(new Moneda(jWidth + 1350+30, 380-30,imgMoneda));
+	grupoAssets.add(new Moneda(3456+30, 130-30,imgMoneda));
+	grupoAssets.add(new Moneda(3744+70, 230-30,imgMoneda));
+	grupoAssets.add(new Moneda(4440+70, 360-30,imgMoneda));
+	grupoAssets.add(new Moneda(4490+70, jHeight-50,imgMoneda));
+	grupoAssets.add(new Moneda(4540+70, 520-30,imgMoneda));
+	grupoAssets.add(new Moneda(4890+230, jHeight-50,imgMoneda));
+	grupoAssets.add(new Moneda(5310+70, 520-30,imgMoneda));
 	/*DOS MONEDAS VERTICALES*/
-	grupoAssets.add(new Moneda(jWidth*3 + 230+70, jHeight - 100-110));
-	grupoAssets.add(new Moneda(jWidth*3 + 230+70, jHeight - 100-150));
+	grupoAssets.add(new Moneda(jWidth*3 + 230+70, jHeight - 100-110,imgMoneda));
+	grupoAssets.add(new Moneda(jWidth*3 + 230+70, jHeight - 100-150,imgMoneda));
 	/*----------------------*/
-	grupoAssets.add(new Moneda(6640+70, 400-30));
-	grupoAssets.add(new Moneda(6780+70, -10-30));
-	grupoAssets.add(new Moneda(7270+70, 550-30));
-	grupoAssets.add(new Moneda(7270+140, 210-30));
-	grupoAssets.add(new Moneda(7690+30, 400-30));
-	grupoAssets.add(new Moneda(7970+250, 400-30));
-	grupoAssets.add(new Moneda(8180+70, 120-30));
-	grupoAssets.add(new Moneda(8500+70, 210-30));
-	grupoAssets.add(new Moneda(8740+70, 400-30));
-	grupoAssets.add(new Moneda(9110+35, 250-30));
+	grupoAssets.add(new Moneda(6640+70, 400-30,imgMoneda));
+	grupoAssets.add(new Moneda(6780+70, -10-30,imgMoneda));
+	grupoAssets.add(new Moneda(7270+70, 550-30,imgMoneda));
+	grupoAssets.add(new Moneda(7270+140, 210-30,imgMoneda));
+	grupoAssets.add(new Moneda(7690+30, 400-30,imgMoneda));
+	grupoAssets.add(new Moneda(7970+250, 400-30,imgMoneda));
+	grupoAssets.add(new Moneda(8180+70, 120-30,imgMoneda));
+	grupoAssets.add(new Moneda(8500+70, 210-30,imgMoneda));
+	grupoAssets.add(new Moneda(8740+70, 400-30,imgMoneda));
+	grupoAssets.add(new Moneda(9110+35, 250-30,imgMoneda));
 	/*=====================================================================================
 	=======================================================================================*/
 	grupoAssets.add(new Puerta(jWidth*5 + 460,400))
@@ -330,12 +414,21 @@ function nivelUno() {
 	personaje.setY(jHeight - personaje.getHeight());
 	personaje.limiteDer = stage.getWidth() - personaje.getWidth();
 	personaje.limiteTope = stage.getHeight() + personaje.getHeight();
+	luna = new Luna(imgLuna,frameLuna);
+	fondo.add(imagenFondo);
+	fondo.add(luna);
+	luna.start();
 	fondo.add(grupoAssets);
 	fondo.add(personaje);
 	fondo.add(puntaje);
 	fondo.add(vidas);
 	stage.add(fondo);
 	intv = setInterval(frameLoop,1000/20);
+	intv2 = setInterval(pestaniarLuna,5000);
+}
+function pestaniarLuna(){
+		luna.setAnimation('pestaniando');
+		setTimeout(function(){luna.setAnimation('abierto');},650);
 }
 
 function moverPersonaje(){

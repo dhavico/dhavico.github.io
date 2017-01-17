@@ -1,11 +1,12 @@
 function Enemigo(x,y, distanciaRecorrido, imagen){
-	Kinetic.Rect.call(this);
+	Kinetic.Image.call(this);
 	this.setWidth(60);
-	this.setHeight(60);
+	this.setHeight(70);
 	this.contador = 0;
 	this.setX(x);
-	this.setY(y);
-	this.setFill('red');
+	this.setY(y-10);
+	//this.setFill('red');
+	this.setImage(imagen);
 	this.mover = function(){
 		this.contador++;
 		this.setX(this.getX() + Math.sin(this.contador * Math.PI / (20 * distanciaRecorrido)) * distanciaRecorrido);
@@ -16,4 +17,4 @@ function Enemigo(x,y, distanciaRecorrido, imagen){
 	  	*/
 	};
 };
-Enemigo.prototype = Object.create(Kinetic.Rect.prototype);
+Enemigo.prototype = Object.create(Kinetic.Image.prototype);
